@@ -1,0 +1,74 @@
+public class Main {
+    char[] stack;
+    int size;
+
+    public Main(int n) {
+        stack = new char[n]; 
+        size = 0;
+    }
+
+    public void push(char value) {
+        if (size == stack.length) {
+            System.out.println("The stack is overloading");
+            return;
+        }
+        stack[size] = value;
+        size++;
+    }
+
+    public void pop() {
+        if (size == 0) {
+            System.out.println("The stack is underloading");
+            return;
+        }
+        size--;
+    }
+
+    public char peek() {
+        if (size == 0) {
+            System.out.println("The Stack is Empty");
+            return '\0'; // Return null character
+        }
+        return stack[size - 1];
+    }
+
+    public void display() {
+        if (size == 0) {
+            System.out.println("The Stack is Empty");
+            return;
+        }
+        for (int i = size - 1; i >= 0; i--) {
+            System.out.print(stack[i] + " ");
+        }
+        System.out.println();
+    }
+
+    public static boolean isMatchingPair(char open, char close) {
+        return (open == '(' && close == ')') ||
+               (open == '{' && close == '}') ||
+               (open == '[' && close == ']');
+    }
+
+    public static boolean validation(String exp) {
+        Main stack = new Main(exp.length());
+        for (char ch : exp.toCharArray()) {
+            if (ch == '(' || ch == '{' || ch == '[') {  
+                stack.push(ch);
+            } else if (ch == ')' || ch == '}' || ch == ']') {
+                if (stack.size == 0) {
+                    return false;
+                }
+                char top = stack.peek();
+                stack.pop();
+                if (!isMatchingPair(top, ch)) {
+                    return false;
+                }
+            }
+        }
+        return stack.size == 0;
+    }
+    public static void main(String[] args) {
+        String input = "{[()]}";
+        System.out.println("Is the input balanced? " + validation(input));
+    }
+}
